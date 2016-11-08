@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
+var checkInput = require('./public/server-functions/check-input');
 
 // puts post request body data and store it on req.body
 app.use(bodyParser.urlencoded({extended: true}));
@@ -17,26 +18,6 @@ var songs = [
   }
 ];
 
-// Prevent user from adding duplicate songs
-
-function checkDuplicate(songs, newSong){
-  for (var i = 0; i < songs.length; i++) {
-    if(newSong.title == songs[i].title && newSong.artist == songs[i].artist){
-      return true;
-      }
-    }
-  return false;
-  }
-
-  function checkForBlankField(newSong){
-    if(newSong.title == "" || newSong.artist == ""){
-      return true;
-    }
-  }
-
-  function addDate(newSong, date){
-    newSong.dateAdded = date;
-  }
 
 // Routes
 app.post('/songs', function(req, res) {
@@ -45,16 +26,15 @@ app.post('/songs', function(req, res) {
   var newSong = req.body;
   var currentDate = new Date();
   //songs.push(newSong);
-  if(checkForBlankField(newSong)){
+  if(checkInput.checkForBlankField(newSong)){
     res.sendStatus(400);
   } else {
-      if(checkDuplicate(songs, newSong)){
+      if(checkInput.checkDuplicate(songs, newSong)){
         console.log("duplicate");
         res.sendStatus(400);
       } else {
         console.log("NOT a duplicate");
-          addDate(newSong, currentDate);
-          console.log(newSong);
+          newSong.dateAdded = currentDate;
           songs.push(newSong);
           res.sendStatus(201);
       }
