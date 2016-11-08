@@ -17,15 +17,50 @@ var songs = [
   }
 ];
 
+// Prevent user from adding duplicate songs
+
+function checkDuplicate(songs, newSong){
+  for (var i = 0; i < songs.length; i++) {
+    if(newSong.title == songs[i].title && newSong.artist == songs[i].artist){
+      return true;
+      }
+    }
+  return false;
+  }
+
+  function checkForBlankField(newSong){
+    if(newSong.title == "" || newSong.artist == ""){
+      return true;
+    }
+  }
+
+  function addDate(newSong, date){
+    newSong.dateAdded = date;
+  }
+
 // Routes
 app.post('/songs', function(req, res) {
   // req.body is supplied by bodyParser above
   console.log("REQ body: ", req.body);
   var newSong = req.body;
-  songs.push(newSong);
-
+  var currentDate = new Date();
+  //songs.push(newSong);
+  if(checkForBlankField(newSong)){
+    res.sendStatus(400);
+  } else {
+      if(checkDuplicate(songs, newSong)){
+        console.log("duplicate");
+        res.sendStatus(400);
+      } else {
+        console.log("NOT a duplicate");
+          addDate(newSong, currentDate);
+          console.log(newSong);
+          songs.push(newSong);
+          res.sendStatus(201);
+      }
+    }
   // created new resource
-  res.sendStatus(201);
+
 });
 
 app.get('/songs', function(req, res) {
