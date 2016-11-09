@@ -28,11 +28,11 @@ app.post('/songs', function(req, res) {
   var currentDate = new Date();
   // check for blank fields, then duplicates, if none exist push newSong to songs
   if(checkInput.checkForBlankField(newSong)){
-    res.sendStatus(400);
+    res.status(400).send("blank field");
   } else {
       if(checkInput.checkDuplicate(songs, newSong)){
         console.log("duplicate");
-        res.sendStatus(400);
+        res.status(400).send('duplicate found');
       } else {
         console.log("NOT a duplicate");
           newSong.dateAdded = currentDate.toDateString();

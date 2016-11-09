@@ -23,6 +23,14 @@ $(document).ready(function() {
         } else {
           alert("Oh no! Your song didn't save correctly.");
         }
+      },
+      error: function(response){
+        if(response.responseText== 'duplicate found'){
+          alert("You already added that song!");
+        }
+        if(response.responseText=="blank field"){
+          alert("Please fill in both the artist and song title fields.");
+        }
       }
     })
 
