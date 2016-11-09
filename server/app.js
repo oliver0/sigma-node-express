@@ -14,7 +14,8 @@ app.set('port', process.env.PORT || 3000);
 var songs = [
   {
     artist: "Bruce Springstein",
-    title: "Born in the U.S.A."
+    title: "Born in the U.S.A.",
+    dateAdded: "Tue Nov 08 2016"
   }
 ];
 
@@ -34,7 +35,7 @@ app.post('/songs', function(req, res) {
         res.sendStatus(400);
       } else {
         console.log("NOT a duplicate");
-          newSong.dateAdded = currentDate;
+          newSong.dateAdded = currentDate.toDateString();
           songs.push(newSong);
           res.sendStatus(201);
       }
