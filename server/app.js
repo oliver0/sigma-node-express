@@ -26,7 +26,7 @@ app.post('/songs', function(req, res) {
   console.log("REQ body: ", req.body);
   var newSong = req.body;
   var currentDate = new Date();
-  //songs.push(newSong);
+  // check for blank fields, then duplicates, if none exist push newSong to songs
   if(checkInput.checkForBlankField(newSong)){
     res.sendStatus(400);
   } else {
